@@ -1,29 +1,134 @@
-app:
-  name: "Huobao Drama API"
-  version: "1.0.0"
-  debug: true
-  language: "zh" # 系统语言：zh(中文) 或 en(英文)
+# AI Short Drama - 配置文件示例
+# 复制此文件为 config.yaml 并填写您的 API Key
 
+# 应用配置
+app:
+  name: "AI Short Drama"
+  version: "1.0.0"
+  debug: true  # 开发环境设为 true，生产环境设为 false
+
+# 服务器配置
 server:
   port: 5678
   host: "0.0.0.0"
   cors_origins:
     - "http://localhost:3012"
-  read_timeout: 600
-  write_timeout: 600
+    - "http://localhost:5678"
+  read_timeout: 600   # 读取超时 (秒)
+  write_timeout: 600  # 写入超时 (秒)
 
+# 数据库配置
 database:
   type: "sqlite"
   path: "./data/drama_generator.db"
   max_idle: 10
   max_open: 100
 
+# 存储配置
 storage:
   type: "local"
   local_path: "./data/storage"
   base_url: "http://localhost:5678/static"
 
+# AI 服务配置
 ai:
+  # 默认提供商
   default_text_provider: "openai"
   default_image_provider: "openai"
-  default_video_provider: "doubao"
+  default_video_provider: "volcengine"
+
+  # OpenAI 配置
+  openai:
+    api_key: "sk-your-openai-api-key"
+    base_url: "https://api.openai.com/v1"
+    text_model: "gpt-4o"
+    image_model: "dall-e-3"
+    timeout: 300
+
+  # 豆包 (火山引擎) 配置
+  doubao:
+    api_key: "your-doubao-api-key"
+    api_secret: "your-doubao-api-secret"
+    text_model: "doubao-pro-4k"
+    image_model: "doubao-edge-edit"
+    video_model: "doubao-video-gen"
+    timeout: 300
+
+  # 通义千问 (阿里云) 配置
+  dashscope:
+    api_key: "your-dashscope-api-key"
+    text_model: "qwen-max"
+    image_model: "wanx-v1"
+    timeout: 300
+
+  # 文心一言 (百度) 配置
+  wenxin:
+    api_key: "your-wenxin-api-key"
+    secret_key: "your-wenxin-secret-key"
+    text_model: "ernie-bot-4"
+    timeout: 300
+
+  # Gemini (Google) 配置
+  gemini:
+    api_key: "your-gemini-api-key"
+    text_model: "gemini-pro"
+    image_model: "gemini-pro-vision"
+    timeout: 300
+
+# 视频生成配置
+video:
+  # 火山引擎 (豆包)
+  volcengine:
+    access_key: "your-volc-access-key"
+    secret_key: "your-volc-secret-key"
+    region: "cn-beijing"
+    endpoint: "https://visual.volcengineapi.com"
+
+  # MiniMax
+  minimax:
+    api_key: "your-minimax-api-key"
+    group_id: "your-group-id"
+    model: "video-01"
+
+  # ChatFire
+  chatfire:
+    api_key: "your-chatfire-api-key"
+    model: "cf-video-v1"
+
+# FFmpeg 配置
+ffmpeg:
+  path: "ffmpeg"  # 如果在系统 PATH 中，否则填写完整路径
+  temp_dir: "./data/temp"
+  output_format: "mp4"
+  video_codec: "libx264"
+  audio_codec: "aac"
+  crf: 23  # 视频质量 (0-51，越小质量越高)
+
+# 日志配置
+logging:
+  level: "info"  # debug, info, warn, error
+  file: "./logs/app.log"
+  max_size: 100  # MB
+  max_backups: 3
+  max_age: 30    # days
+
+# 任务队列配置
+queue:
+  max_concurrent: 3  # 最大并发任务数
+  retry_times: 3     # 失败重试次数
+  timeout: 3600      # 任务超时 (秒)
+
+# 速率限制
+rate_limit:
+  enabled: true
+  requests_per_minute: 60
+  burst: 10
+
+# 功能开关
+features:
+  script_generation: true    # 剧本生成
+  character_design: true     # 角色设计
+  storyboard_generation: true # 分镜生成
+  video_generation: true     # 视频生成
+  batch_processing: true     # 批量处理
+  community_sharing: false   # 社区分享 (v3.0+)
