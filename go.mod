@@ -5,7 +5,6 @@ go 1.23.0
 replace github.com/drama-generator/backend => ./
 
 require (
-	github.com/aliyun/alibabacloud-dashscope-go-sdk/sdk v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.6.0
 	github.com/robfig/cron/v3 v3.0.1
